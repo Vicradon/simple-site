@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- 
+Bugs:
+1. An empty field can be typed by typing whitespaces
+2. 
+
+-->
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Simple FireStore Project</title>
+  <script src="https://www.gstatic.com/firebasejs/6.5.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-firestore.js"></script>
+  <style>
+    body {
+      background-color: #ddd;
+    }
+
+    nav {
+      display: flex;
+      background-color: rgb(102, 102, 102);
+      color: #fff;
+      justify-content: space-between;
+    }
+
+    .nav-items {
+      display: flex;
+    }
+
+    .settings {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+
+    .settings button {
+      height: 70%;
+      width: 30%;
+      font-size: 0.7em;
+    }
+
+    nav * {
+      padding: 0 2vw;
+    }
+
+    .nav-menu {
+      display: none;
+    }
+
+    .nav-menu-trigger {
+      display: none;
+    }
+
+    /* form {
+      display: flex;
+      flex-flow: column nowrap;
+    } */
+    .add-content {
+      display: flex;
+      justify-content: center;
+      margin: 10vh 0;
+      flex-flow: column nowrap;
+      align-items: center;
+    }
+
+    input,
+    #textbox {
+      width: 30vw;
+      padding: 1.5vh 1vw;
+    }
+
+    .main-content {
+      width: 80%;
+      display: flex;
+      flex-flow: column wrap;
+    }
+
+    .typed-stuff-heading {
+      margin: 0
+    }
+
+    .typed-stuff {
+      border: 1px solid #ccc;
+      margin-bottom: 2vh;
+      background-color: #fff;
+      padding: 2vh 2vw;
+    }
+
+    #textbox {
+      display: none;
+      margin-top: 2vh;
+    }
+
+    .save-to-firestore {
+      margin-right: 10%;
+      margin-top: 3vh;
+      display: none;
+      align-self: flex-end;
+    }
+
+    @media(max-width: 700px) {
+
+      input,
+      #textbox {
+        width: 60vw;
+        margin-left: 10vw;
+      }
+
+      nav {
+        height: 9vh;
+      }
+
+      .nav-items,
+      .settings {
+        display: none;
+      }
+
+      .nav-menu-trigger {
+        display: block;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="nav-items">
+      <p>HELLO</p>
+      <p>ABOUT</p>
+    </div>
+    <div class="settings">
+      <p>Settings:</p>
+      <button class="activate-textbox">Activate Textbox</button>
+      <button class="nav-background">Toggle Nav background</button>
+    </div>
+    <button class="nav-menu-trigger">
+      MENU
+    </button>
+    <div class="nav-menu">
+      <div>
+        <p>HELLO</p>
+        <p>ABOUT</p>
+      </div>
+      <div>
+        <p>Settings:</p>
+        <button class="activate-textbox">Activate Textbox</button>
+        <button class="nav-background">Toggle Nav background</button>
+      </div>
+    </div>
+  </nav>
+  <section class="add-content">
+    <form action="">
+      <input type="text" id="typed-title" placeholder="type something">
+      <textarea name="" id="textbox"></textarea>
+      <h3>Your Results appear here</h3>
+    </form>
+    <div class="main-content">
+
+    </div>
+    <button class="save-to-firestore">
+      Save Text
+    </button>
+    <button class="add">
+      Add Text
+    </button>
+  </section>
+
+  <script>
+    const $ = n => document.querySelector(n);
+    const log = n => console.log(n);
+    // const navMenuTrigger = $('.nav-menu-trigger')
+    const typedTitle = $('#typed-title');
+    const form = $('form');
+    // const typedStuff = $('.typed-stuff');
+    const saveToFirestore = $('.save-to-firestore');
+    const navBackground = $('.nav-background');
+    const activateTextBox = $('.activate-textbox');
+    const nav = $('nav');
+    const textbox = $('#textbox');
+    const add = $('.add');
+    const mainContent = $('.main-content');
+
+
+
+
+    add.addEventListener('click', e => {
+      // e.preventDefault();
+      // if (typedTitle.value.split.length < 2){
+      //     alert('You must type more than two characters')
+      // }
+      if (typedTitle.value != '') {
+        const typedStuff = document.createElement('div');
+        typedStuff.classList.add('typed-stuff');
+        const typedStuffHeading = document.createElement('h1');
+        const typedStuffContent = document.createElement('div');
+        typedStuffHeading.classList.add('typed-stuff-heading');
+        typedStuffHeading.textContent = typedTitle.value;
+        typedStuffContent.textContent = textbox.value;
+        typedStuff.appendChild(typedStuffHeading);
+        typedStuff.appendChild(typedStuffContent);
+        mainContent.appendChild(typedStuff);
+        typedTitle.value = '';
+        textbox.value = '';
+        saveToFirestore.style.display = 'block';
+      }
+    });
+
+    navBackground.onclick = () => {
+      nav.style.backgroundColor === "rgb(102, 102, 102)" ? nav.style.backgroundColor = 'rgb(100, 150, 255)' : nav.style.backgroundColor = "rgb(102, 102, 102)";
+    }
+    activateTextBox.onclick = () => {
+      if (textbox.style.display === 'block') {
+        textbox.style.display = 'none'
+        activateTextBox.textContent = "activate textbox";
+      }
+      else {
+        textbox.style.display = 'block'
+        activateTextBox.textContent = "deactivate textbox";
+      }
+    }
+
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyCz-VkRWYmkKkJct4tFStqcZQ1CrN_qePo",
+      authDomain: "simple-site-22c52.firebaseapp.com",
+      databaseURL: "https://simple-site-22c52.firebaseio.com",
+      projectId: "simple-site-22c52",
+      storageBucket: "simple-site-22c52.appspot.com",
+      messagingSenderId: "105690052094",
+      appId: "1:105690052094:web:26475ced40b29e7553bcaf"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    //link to firestore
+    const db = firebase.firestore();
+    saveToFirestore.addEventListener('click', e => {
+      log('hello');
+      // if (mainContent.innerHTML != ''){
+      //   const postList = mainContent.childNodes.map(node => JSON.stringify(node));
+      //   log(postList);
+      //   //postList.forEach(post => db.collection('posts').add(post)) 
+      // }
+    });
+
+  </script>
+</body>
+
+</html>
