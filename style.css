@@ -1,0 +1,108 @@
+body {
+  background-color: #ddd;
+}
+
+nav {
+  display: flex;
+  background-color: rgb(102, 102, 102);
+  color: #fff;
+  justify-content: space-between;
+}
+
+.nav-items {
+  display: flex;
+}
+
+.settings {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.settings button {
+  height: 70%;
+  width: 30%;
+  font-size: 0.7em;
+}
+
+nav * {
+  padding: 0 2vw;
+}
+
+.nav-menu {
+  display: none;
+}
+
+.nav-menu-trigger {
+  display: none;
+}
+
+/* form {
+  display: flex;
+  flex-flow: column nowrap;
+} */
+.add-content {
+  display: flex;
+  justify-content: center;
+  margin: 10vh 0;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+input,
+#textbox {
+  width: 30vw;
+  padding: 1.5vh 1vw;
+}
+
+.main-content {
+  width: 80%;
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.typed-stuff-heading {
+  margin: 0
+}
+
+.typed-stuff {
+  border: 1px solid #ccc;
+  margin-bottom: 2vh;
+  background-color: #fff;
+  padding: 2vh 2vw;
+}
+
+#textbox {
+  display: none;
+  margin-top: 2vh;
+}
+
+.save-to-firestore {
+  margin-right: 10%;
+  margin-top: 3vh;
+  display: none;
+  align-self: flex-end;
+}
+
+@media(max-width: 700px) {
+
+  input,
+  #textbox {
+    width: 60vw;
+    margin-left: 10vw;
+  }
+
+  nav {
+    height: 9vh;
+  }
+
+  .nav-items,
+  .settings {
+    display: none;
+  }
+
+  .nav-menu-trigger {
+    display: block;
+  }
+}
