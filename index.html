@@ -6,6 +6,11 @@ Bugs:
 1. An empty field can be typed by typing whitespaces
 2. 
 
+Next Features:
+1. A way to truncate the text after 10 characters
+2. Clicking on a post brings up a modal where tou can read it
+3. A menu item which displays all posts 
+4. A theme changer
 -->
 
 
@@ -14,6 +19,7 @@ Bugs:
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Simple FireStore Project</title>
+  <link rel="stylesheet" href="./mdi/mdi.css">
   <script src="https://www.gstatic.com/firebasejs/6.5.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-firestore.js"></script>
   <link rel="stylesheet" href="./style.css">
@@ -31,24 +37,29 @@ Bugs:
       <button class="nav-background">Toggle Nav background</button>
     </div>
     <button class="nav-menu-trigger">
-      MENU
+      <i class="material-icons">menu</i>
     </button>
     <div class="nav-menu">
-      <div>
-        <p>HELLO</p>
-        <p>ABOUT</p>
+      <p class="close">&times;</p>
+      <div class="notclose">
+        <div class="nav-menu-info">
+          <p>HELLO</p>
+          <p>ABOUT</p>
+        </div>
+        <div class="nav-menu-settings">
+          <p id="settings">Settings:</p>
+          <button class="activate-textbox">Activate Textbox</button>
+        </div>
       </div>
-      <div>
-        <p>Settings:</p>
-        <button class="activate-textbox">Activate Textbox</button>
-        <button class="nav-background">Toggle Nav background</button>
-      </div>
-    </div>
+    </div> 
   </nav>
+  <div class="toptext">
+    <h1>Hello, Add new posts here</h1>
+  </div>
   <section class="add-content">
     <form action="">
-      <input type="text" id="typed-title" placeholder="type something">
-      <textarea name="" id="textbox"></textarea>
+      <input type="text" id="typed-title" placeholder="Heading">
+      <textarea name="" id="textbox"  oninput='this.style.height = "";this.style.height = `${this.scrollHeight}px`' placeholder="Your story goes here"></textarea>
       <h3>Your Results appear here</h3>
     </form>
     <div class="main-content">
@@ -62,6 +73,22 @@ Bugs:
     </button>
   </section>
 
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyCz-VkRWYmkKkJct4tFStqcZQ1CrN_qePo",
+      authDomain: "simple-site-22c52.firebaseapp.com",
+      databaseURL: "https://simple-site-22c52.firebaseio.com",
+      projectId: "simple-site-22c52",
+      storageBucket: "simple-site-22c52.appspot.com",
+      messagingSenderId: "105690052094",
+      appId: "1:105690052094:web:26475ced40b29e7553bcaf"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    //link to firestore
+    const db = firebase.firestore();
+  </script>
   <script src="./script.js"></script>
 </body>
 

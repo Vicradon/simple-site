@@ -1,19 +1,30 @@
 const $ = n => document.querySelector(n);
+const $$ = n => document.querySelectorAll(n);
 const log = n => console.log(n);
-// const navMenuTrigger = $('.nav-menu-trigger')
+const navMenuTrigger = $('.nav-menu-trigger')
 const typedTitle = $('#typed-title');
 const form = $('form');
 // const typedStuff = $('.typed-stuff');
 const saveToFirestore = $('.save-to-firestore');
-const navBackground = $('.nav-background');
-const activateTextBox = $('.activate-textbox');
+const navBackground = $$('.nav-background');
+const activateTextBox = $$('.activate-textbox');
 const nav = $('nav');
 const textbox = $('#textbox');
 const add = $('.add');
 const mainContent = $('.main-content');
+const navMenu = $('.nav-menu');
+const close = $('.close');
 
 
+navMenuTrigger.onclick = () => {
+  navMenu.style.height = "80vh";
+  navMenu.style.display = "block";
+}
 
+close.onclick = () => {
+  navMenu.style.height = "0";
+  navMenu.style.display = "none";
+}
 
 add.addEventListener('click', e => {
   // e.preventDefault();
@@ -26,6 +37,8 @@ add.addEventListener('click', e => {
     const typedStuffHeading = document.createElement('h1');
     const typedStuffContent = document.createElement('div');
     typedStuffHeading.classList.add('typed-stuff-heading');
+    typedStuffContent.classList.add('typed-stuff-content');
+    // typedStuffContent.classList.add('truncate');
     typedStuffHeading.textContent = typedTitle.value;
     typedStuffContent.textContent = textbox.value;
     typedStuff.appendChild(typedStuffHeading);
@@ -40,7 +53,7 @@ add.addEventListener('click', e => {
 navBackground.onclick = () => {
   nav.style.backgroundColor === "rgb(102, 102, 102)" ? nav.style.backgroundColor = 'rgb(100, 150, 255)' : nav.style.backgroundColor = "rgb(102, 102, 102)";
 }
-activateTextBox.onclick = () => {
+activateTextBox.forEach(x => x.onclick = () => {
   if (textbox.style.display === 'block') {
     textbox.style.display = 'none'
     activateTextBox.textContent = "activate textbox";
@@ -49,36 +62,20 @@ activateTextBox.onclick = () => {
     textbox.style.display = 'block'
     activateTextBox.textContent = "deactivate textbox";
   }
-}
+})
 
-// Your web app's Firebase configuration
-var firebaseConfig = {
-  apiKey: "AIzaSyCz-VkRWYmkKkJct4tFStqcZQ1CrN_qePo",
-  authDomain: "simple-site-22c52.firebaseapp.com",
-  databaseURL: "https://simple-site-22c52.firebaseio.com",
-  projectId: "simple-site-22c52",
-  storageBucket: "simple-site-22c52.appspot.com",
-  messagingSenderId: "105690052094",
-  appId: "1:105690052094:web:26475ced40b29e7553bcaf"
-};
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-//link to firestore
-const db = firebase.firestore();
 saveToFirestore.addEventListener('click', e => {
   if (mainContent.innerHTML != '') {
     const tempPostList = [];
     mainContent.childNodes.forEach(node => tempPostList.push(node.innerHTML));
-    // tempPostList.forEach((x, i) => {
-    //   if (typeof(x) === undefined) tempPostList.splice(i, 1);
-    // })
-    for (let i = 0; i < tempPostList.length; i++) {
-      if (typeof (tempPostList[i] === undefined)) tempPostList.splice(i, 1);
-    }
-    //const postList = tempPostList.map((x, i) => eval(`{${i}:'${x}'}`));
-    tempPostList.forEach(post => db.collection('posts').doc('my posts').set({
+    tempPostList.shift();
+    log(tempPostList);
+    tempPostList.forEach(post => db.collection('posts').add({
       title: "a title",
       body: `${post}`
-    }));
+    })
+      .then(() => { console.log("Document successfully written!") })
+      .catch((error) => { console.error("Error writing document: ", error) })
+    );
   }
 });
